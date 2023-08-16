@@ -1,0 +1,15 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Montserrat", "Oswald", sans-serif;
+  background-color: #f8f8f8;
+}
+
+img {
+  max-width: 100%;
+}

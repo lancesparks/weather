@@ -1,0 +1,28 @@
+.container {
+  &_conditions {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    padding-left: 2em;
+  }
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.icon {
+  font-size: 16px;
+  margin-right: 7px;
+}
+
+p {
+  display: flex;
+  align-items: center;
+  margin: 15px 0px;
+}
+
+h2 {
+  margin: 5px 0px;
+}

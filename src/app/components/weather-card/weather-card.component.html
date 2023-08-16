@@ -1,0 +1,12 @@
+<div class="container_card" [ngClass]="{ shrink: shrink }">
+  <p class="card_time" *ngIf="!isCurrentForecast">
+    {{ day }}
+  </p>
+  <p class="card_time" *ngIf="isCurrentForecast">
+    {{ day | date : "short" }}
+  </p>
+  <img class="card_image" [src]="weatherImage" alt="" />
+  <p class="card_temp">{{ temp | number : "1.0-0" }}&#176; {{ unitType }}</p>
+
+  <div class="verticalLine" *ngIf="isCurrentForecast && !isLast"></div>
+</div>

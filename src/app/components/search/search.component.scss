@@ -1,0 +1,250 @@
+::ng-deep {
+  @media (min-width: 1250px) {
+    .container {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      grid-column-gap: 2em;
+    }
+
+    .container_weekForecast_cards app-weather-card .container_card {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-around;
+      padding: 2em 0em;
+      position: relative;
+    }
+  }
+}
+
+input::placeholder {
+  font-size: 14px;
+}
+
+.container {
+  &_search {
+    display: flex;
+    justify-content: center;
+    position: relative;
+
+    &_icons {
+      display: flex;
+      position: absolute;
+      height: 100%;
+      right: 0%;
+    }
+  }
+
+  &_current {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    margin-top: 3em;
+  }
+
+  &_header {
+    &_header {
+      margin-top: 0px;
+      margin-bottom: 0px;
+    }
+    &_helper {
+      margin-top: 0px;
+    }
+  }
+
+  &_tomorrowsForecast {
+    background-color: #e5e7eb;
+    padding: 0.5em 1em;
+    margin-top: 1em;
+
+    &_cards {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+      justify-content: center;
+      position: relative;
+    }
+  }
+
+  &_weekForecast {
+    background-color: #e5e7eb;
+    padding: 0.5em 1em;
+    margin-top: 1em;
+    &_cards {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+      justify-content: center;
+    }
+  }
+
+  &_todaysConditions {
+    background-color: #e5e7eb;
+    padding: 0.5em 1em 1em 1em;
+    margin-top: 1em;
+  }
+
+  &_filters {
+    background-color: #ffff;
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 100%;
+    transition: all 0.5s ease-in;
+    width: 20em;
+  }
+}
+
+.closed {
+  width: 0px;
+  transition: all 0.5s ease-out;
+  visibility: hidden;
+}
+
+.filters {
+  padding: 2em 3em 0em 1em;
+  height: 100%;
+}
+
+.filter h3 {
+  width: 10em;
+  text-transform: uppercase;
+  color: #4b5563;
+}
+
+.close {
+  display: flex;
+}
+
+.closeFilters {
+  display: flex;
+  margin-top: 1em;
+  position: absolute;
+  right: 15px;
+}
+
+.closeFilters svg {
+  cursor: pointer;
+  height: 20px;
+  width: 20px;
+}
+
+.errorMsg {
+  color: red;
+  margin-left: 2px;
+  font-size: 14px;
+}
+
+.today {
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+select {
+  /* Reset Select */
+  appearance: none;
+  border: 0;
+  box-shadow: none;
+  outline: none;
+  /* Personalize */
+  flex: 1;
+  padding: 0 1em;
+  background-color: #e5e7eb;
+  background: url(../../../assets/images/angle-down-solid.svg) no-repeat right
+    #ddd;
+  background-size: 20px;
+  background-position-x: 18em;
+  cursor: pointer;
+}
+
+.filterSelect {
+  position: relative;
+  display: flex;
+  width: 20em;
+  height: 3em;
+  border-radius: 0.25em;
+  overflow: hidden;
+}
+
+.search {
+  border: 1px solid #dfdfdf;
+  border-radius: 2px;
+  font-size: 14px;
+  padding: 0.5rem 4rem 0.5rem 1rem;
+  width: 100%;
+
+  &:focus {
+    outline: none;
+  }
+
+  &_button {
+    display: flex;
+    font-size: 14px;
+    align-items: center;
+    margin-right: 1em;
+
+    &:hover {
+      cursor: pointer;
+      fill: blue;
+    }
+  }
+}
+
+.weather {
+  display: flex;
+  justify-content: flex-end;
+  zoom: 1.5;
+}
+
+.country {
+  margin-left: 10px;
+}
+
+.horizontalLine {
+  margin: 0 auto;
+  height: 1px;
+  width: 85%;
+  background-color: #f3f4f6;
+  visibility: hidden;
+}
+
+@media (min-width: 1250px) {
+  .container {
+    &_todaysConditions {
+      margin-top: 3em;
+    }
+    &_tomorrowsForecast {
+      margin-top: 2em;
+    }
+
+    &_current {
+      margin-top: 5em;
+    }
+    &_left {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    &_right {
+      height: 100%;
+    }
+
+    &_weekForecast {
+      margin-top: 0px;
+      height: 100%;
+
+      &_cards {
+        grid-template-columns: 1fr;
+        height: 90%;
+        width: 100%;
+        transition: all 0.5s ease-out;
+      }
+    }
+
+    .shrink {
+      width: 50%;
+      transition: all 0.5s ease-in;
+    }
+
+    .horizontalLine {
+      visibility: visible;
+    }
+  }
+}
