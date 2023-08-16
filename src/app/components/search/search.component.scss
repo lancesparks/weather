@@ -21,6 +21,9 @@ input::placeholder {
 }
 
 .container {
+  position: relative;
+  top: 0em;
+  transition: all 0.5s ease-out;
   &_search {
     display: flex;
     justify-content: center;
@@ -84,22 +87,25 @@ input::placeholder {
     background-color: #ffff;
     position: absolute;
     top: 0;
-    right: 0;
-    height: 100%;
+    left: 0;
     transition: all 0.5s ease-in;
-    width: 20em;
+    width: 100%;
+    height: 10rem;
   }
 }
 
 .closed {
-  width: 0px;
+  top: -10em;
   transition: all 0.5s ease-out;
   visibility: hidden;
+  z-index: 10;
 }
 
 .filters {
-  padding: 2em 3em 0em 1em;
-  height: 100%;
+  padding: 1em 3em 0em 1em;
+  display: flex;
+  justify-content: space-around;
+  position: static;
 }
 
 .filter h3 {
@@ -204,6 +210,11 @@ select {
   visibility: hidden;
 }
 
+.push {
+  top: 10em;
+  transition: all 0.5s ease-in;
+}
+
 @media (min-width: 1250px) {
   .container {
     &_todaysConditions {
@@ -238,9 +249,10 @@ select {
       }
     }
 
-    .shrink {
-      width: 50%;
-      transition: all 0.5s ease-in;
+    .closed {
+      width: 0px;
+      transition: all 0.5s ease-out;
+      visibility: hidden;
     }
 
     .horizontalLine {

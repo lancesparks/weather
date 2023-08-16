@@ -3,6 +3,7 @@ import { HttpClient, HttpParams } from "@angular/common/http";
 import { key } from "../../../api.key";
 import { Observable, Subject, catchError, map, of, switchMap } from "rxjs";
 import { SearchParams } from "../types";
+import { Countries } from "../components/shared/countries";
 
 const baseUrl = "http://api.openweathermap.org";
 
@@ -45,8 +46,8 @@ export class WeatherService {
       .get(`${baseUrl}/geo/1.0/direct?q=${cityName}'&limit=5&appid=${key}`)
       .pipe(
         map((data: any) => {
-          return data.filter((country: any) => {
-            return country.state.toLowerCase() === countryName.toLowerCase();
+          return data.filter((search: any) => {
+            return this.filterCountry(cityName, countryName, search);
           });
         }),
         switchMap((data: any): any => {
@@ -67,8 +68,8 @@ export class WeatherService {
       )
       .pipe(
         map((data: any) => {
-          return data.filter((country: any) => {
-            return country.state.toLowerCase() === countryName.toLowerCase();
+          return data.filter((search: any) => {
+            return this.filterCountry(cityName, countryName, search);
           });
         }),
         switchMap((data: any): any => {
@@ -124,7 +125,7 @@ export class WeatherService {
         if (foreCastDay === todaysDate) {
           return day;
         }
-        if (foreCastDay === tomorrow && forecast.length !== 3) {
+        if (foreCastDay === tomorrow && forecast.length !== 5) {
           forecast.push(day);
           return day;
         }
@@ -134,5 +135,14 @@ export class WeatherService {
         }
       })
       .filter((day: any) => day != null);
+  }
+
+  filterCountry(cityName, countryName, search) {
+    let country = Countries[search?.country];
+    return (
+      search?.state.toLowerCase() === countryName.toLowerCase() ||
+      (country.toLowerCase() === countryName.toLowerCase() &&
+        search.name.toLowerCase().includes(cityName.toLowerCase()))
+    ); // some times citys have the same name in different countries, try and find the right city/country
   }
 }

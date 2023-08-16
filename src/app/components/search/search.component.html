@@ -1,4 +1,8 @@
-<div class="container" *ngIf="currentWeather$ | async as weather">
+<div
+  class="container"
+  *ngIf="currentWeather$ | async as weather"
+  [ngClass]="{ push: viewFilters }"
+>
   <div class="container_left">
     <form [formGroup]="weatherForm">
       <div class="container_search">
@@ -13,7 +17,7 @@
             formControlName="country"
             type="text"
             class="search country"
-            placeholder="Enter Country"
+            placeholder="Enter Country or State"
           />
         </ng-container>
 
@@ -115,7 +119,7 @@
       </div>
     </div>
     <div class="container_tomorrowsForecast">
-      <p>Today / Tomorrow's Forecast</p>
+      <p>Upcoming Forecast</p>
       <div class="container_tomorrowsForecast_cards">
         <ng-container
           *ngFor="
@@ -142,10 +146,7 @@
   <div class="container_right">
     <div class="container_weekForecast">
       <p>5 Day Forecast</p>
-      <div
-        class="container_weekForecast_cards"
-        [ngClass]="{ shrink: viewFilters }"
-      >
+      <div class="container_weekForecast_cards">
         <ng-container
           *ngFor="let day of currentForecast$ | async; let last = last"
         >
@@ -178,7 +179,7 @@
   </div>
 
   <div class="filters">
-    <div class="filter">
+    <div class="filter" [ngClass]="{ closed: !viewFilters }">
       <h3>Search Type</h3>
       <select
         name="searchType"
