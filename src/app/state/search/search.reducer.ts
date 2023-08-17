@@ -45,7 +45,6 @@ export const searchReducer = createReducer(
   on(
     action.loadWeatherSuccess,
     (state: SearchState, { weather }: SearchState): SearchState => {
-      console.log(weather);
       return {
         ...state,
         weather: weather,
@@ -160,7 +159,6 @@ export const searchReducer = createReducer(
   on(
     action.loadWeatherByZipForecastSuccess,
     (state: SearchState, { forecast }): SearchState => {
-      console.log(forecast);
       return {
         ...state,
         forecast: forecast,
