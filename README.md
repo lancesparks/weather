@@ -29,5 +29,7 @@ Measurements can be in either Fahrenheit or Celsius
 ## Example Inputs:
 
 Search by Zip Code: `32174`
+
 Search by City and State: `Denver Colorado`
+
 Search by Latitude and Longitude: `33.44 -94.04`
