@@ -9,7 +9,7 @@ import { Images } from "../shared/getImages";
 export class WeatherCardComponent implements OnInit {
   constructor() {}
 
-  @Input() temp!: string;
+  @Input() temp!: string | number;
   @Input() day!: string;
   @Input() condition!: string;
   @Input() rain!: any;

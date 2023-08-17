@@ -6,20 +6,19 @@ import * as action from "./search.actions";
 import { catchError, of } from "rxjs";
 import { filter, map, pairwise, switchMap, take, tap } from "rxjs/operators";
 import { Injectable } from "@angular/core";
-import { Weather } from "src/app/types";
+import { Weather, SearchParams, ForecastResponse } from "src/app/types";
 
 @Injectable()
 export class SearchEffects {
   constructor(
     private actions$: Actions,
-    private store: Store<AppState>,
     private weatherService: WeatherService
   ) {}
 
   loadWeatherLatLon$ = createEffect(() =>
     this.actions$.pipe(
       ofType(action.searchWeather),
-      switchMap((actions: any) => {
+      switchMap((actions: SearchParams) => {
         return this.weatherService
           .searchWeatherByLatLong(
             actions.coords.lat,
@@ -27,12 +26,12 @@ export class SearchEffects {
             actions.coords.units
           )
           .pipe(
-            map((weather: Partial<Weather>) => {
-              return action.loadWeatherSuccess({ parameters: weather });
+            map((weather: Weather) => {
+              return action.loadWeatherSuccess({ weather: weather });
             })
           );
       }),
-      catchError((error) => {
+      catchError((error: Error) => {
         return of(error).pipe(
           map(() => {
             return action.loadWeatherFailure({
@@ -46,7 +45,7 @@ export class SearchEffects {
   loadForecastLatLon$ = createEffect(() =>
     this.actions$.pipe(
       ofType(action.searchWeatherLatLonForecast),
-      switchMap((actions: any) => {
+      switchMap((actions: SearchParams) => {
         return this.weatherService
           .searchWeatherForecastLatLon(
             actions.coords.lat,
@@ -55,17 +54,18 @@ export class SearchEffects {
           )
           .pipe(
             map(
-              (weather: any) => this.weatherService.getForecastDates(weather)
+              (weather: ForecastResponse) =>
+                this.weatherService.getForecastDates(weather)
               //get the start of each day of a 5 day forecast
             ),
-            map((weather) => {
+            map((weather: Partial<Weather>[]) => {
               return action.loadWeatherLatLonForecastSuccess({
                 forecast: weather,
               });
             })
           );
       }),
-      catchError((error) => {
+      catchError((error: Error) => {
         return of(error).pipe(
           map(() => {
             return action.loadWeatherFailure({
@@ -80,7 +80,7 @@ export class SearchEffects {
   loadForecastCity$ = createEffect(() =>
     this.actions$.pipe(
       ofType(action.searchWeatherByCityForecast),
-      switchMap((actions: any) => {
+      switchMap((actions: SearchParams) => {
         return this.weatherService
           .searchForecastCityName(
             actions.coords.city,
@@ -89,16 +89,17 @@ export class SearchEffects {
           )
           .pipe(
             map(
-              (weather: any) => this.weatherService.getForecastDates(weather) //get the start of each day of a 5 day forecast
+              (weather: ForecastResponse) =>
+                this.weatherService.getForecastDates(weather) //get the start of each day of a 5 day forecast
             ),
-            map((weather) => {
+            map((weather: Partial<Weather>[]) => {
               return action.loadWeatherByCityForecastSuccess({
                 forecast: weather,
               });
             })
           );
       }),
-      catchError((error) => {
+      catchError((error: Error) => {
         return of(error).pipe(
           map(() => {
             return action.loadWeatherByCityForecastFailure({
@@ -113,20 +114,20 @@ export class SearchEffects {
   loadWeatherCity$ = createEffect(() =>
     this.actions$.pipe(
       ofType(action.searchWeatherByCity),
-      switchMap((actions: any) => {
+      switchMap((actions: SearchParams) => {
         return this.weatherService
           .searchWeatherCityName(
-            actions.parameters.city,
-            actions.parameters.country,
-            actions.parameters.units
+            actions.coords.city,
+            actions.coords.country,
+            actions.coords.units
           )
           .pipe(
-            map((weather) => {
-              return action.loadWeatherSuccess({ parameters: weather });
+            map((weather: Weather) => {
+              return action.loadWeatherSuccess({ weather: weather });
             })
           );
       }),
-      catchError((error) => {
+      catchError((error: Error) => {
         return of(error).pipe(
           map(() => {
             return action.loadWeatherByCityForecastFailure({
@@ -141,8 +142,7 @@ export class SearchEffects {
   loadForecastZip$ = createEffect(() =>
     this.actions$.pipe(
       ofType(action.searchWeatherByZipForecast),
-      switchMap((actions: any) => {
-        console.log(actions);
+      switchMap((actions: SearchParams) => {
         return this.weatherService
           .searchWeatherForecastZip(
             actions.coords.zip,
@@ -151,16 +151,17 @@ export class SearchEffects {
           )
           .pipe(
             map(
-              (weather: any) => this.weatherService.getForecastDates(weather) //get the start of each day of a 5 day forecast
+              (weather: ForecastResponse) =>
+                this.weatherService.getForecastDates(weather) //get the start of each day of a 5 day forecast
             ),
-            map((weather) => {
+            map((weather: Partial<Weather>[]) => {
               return action.loadWeatherByCityForecastSuccess({
                 forecast: weather,
               });
             })
           );
       }),
-      catchError((error) => {
+      catchError((error: Error) => {
         return of(error).pipe(
           map(() => {
             return action.loadWeatherByCityForecastFailure({
@@ -175,20 +176,20 @@ export class SearchEffects {
   loadWeatherZip$ = createEffect(() =>
     this.actions$.pipe(
       ofType(action.searchWeatherByZip),
-      switchMap((actions: any) => {
+      switchMap((actions: SearchParams) => {
         return this.weatherService
           .searchWeatherZip(
-            actions.parameters.zip,
-            actions.parameters.country,
-            actions.parameters.units
+            actions.coords.zip,
+            actions.coords.country,
+            actions.coords.units
           )
           .pipe(
-            map((weather) => {
-              return action.loadWeatherSuccess({ parameters: weather });
+            map((weather: Weather) => {
+              return action.loadWeatherSuccess({ weather: weather });
             })
           );
       }),
-      catchError((error) => {
+      catchError((error: Error) => {
         return of(error).pipe(
           map(() => {
             return action.loadWeatherByCityForecastFailure({

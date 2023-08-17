@@ -8,6 +8,7 @@ import { tap, map } from "rxjs";
 import { Images } from "../shared/getImages";
 import { Days } from "../shared/days";
 import { WeatherValidator } from "../../validators/weatherValidator";
+import { UnitType, Weather } from "../../types";
 
 @Component({
   selector: "app-search",
@@ -26,7 +27,7 @@ export class SearchComponent implements OnInit {
   public unitType = "F";
 
   public currentWeather$ = this.store.select(state.selectCurrentWeather).pipe(
-    tap((data) => {
+    tap((data: Weather) => {
       if (!data) {
         return;
       }
@@ -38,7 +39,7 @@ export class SearchComponent implements OnInit {
         this.previousSearch = data;
       }
     }),
-    map((data) => (!data?.weather ? this.previousSearch : data))
+    map((data: Weather) => (!data?.weather ? this.previousSearch : data))
   );
 
   public currentForecast$ = this.store.select(state.selectForecast);
@@ -126,7 +127,7 @@ export class SearchComponent implements OnInit {
     this.weatherForm.get("zip").setValue("");
 
     this.store.dispatch(
-      action.searchWeatherByCity({ parameters: { city, country, units } })
+      action.searchWeatherByCity({ coords: { city, country, units } })
     );
 
     this.store.dispatch(
@@ -154,7 +155,7 @@ export class SearchComponent implements OnInit {
     this.weatherForm.get("city").setValue("");
 
     this.store.dispatch(
-      action.searchWeatherByZip({ parameters: { zip, country, units } })
+      action.searchWeatherByZip({ coords: { zip, country, units } })
     );
 
     this.store.dispatch(

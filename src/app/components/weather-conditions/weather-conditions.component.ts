@@ -11,7 +11,7 @@ export class WeatherConditionsComponent implements OnInit {
   @Input() feelsLike!: string;
   @Input() wind!: number;
   @Input() humidity!: number;
-  @Input() maxTemp!: any;
-  @Input() unitType!: any;
+  @Input() maxTemp!: number;
+  @Input() unitType!: string;
   ngOnInit(): void {}
 }

@@ -1,10 +1,10 @@
 export interface Weather {
-  base: string;
-  clouds: {
+  base?: string;
+  clouds?: {
     all: string;
   };
   cod: number;
-  coord: Coordinates;
+  coord: Coordinates | null;
   dt: number;
   id: number;
   main: Temp;
@@ -12,8 +12,28 @@ export interface Weather {
   sys: Sys;
   timeZone: number;
   visibility: number;
-  weather: WeatherData[];
+  weather?: WeatherData[];
   wind: Wind;
+  dt_txt?: string;
+}
+
+export interface ForecastResponse {
+  city: ForecastCity;
+  cnt: number;
+  cod: string;
+  list: Partial<Weather>[];
+  message: number;
+}
+
+export interface ForecastCity {
+  coord: Coordinates;
+  country: string;
+  id: number;
+  name: string;
+  population: number;
+  sunrise: number;
+  sunset: number;
+  timezone: number;
 }
 
 export interface Coordinates {

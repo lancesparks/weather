@@ -1,8 +1,8 @@
 import { Injectable } from "@angular/core";
 import { HttpClient, HttpParams } from "@angular/common/http";
 import { key } from "../../../api.key";
-import { Observable, Subject, catchError, map, of, switchMap } from "rxjs";
-import { SearchParams } from "../types";
+import { Observable, Subject, catchError, map, of, switchMap, tap } from "rxjs";
+import { SearchParams, City, ForecastResponse, Weather } from "../types";
 import { Countries } from "../components/shared/countries";
 
 const baseUrl = "http://api.openweathermap.org";
@@ -41,19 +41,19 @@ export class WeatherService {
     cityName: string,
     countryName: string,
     units: string
-  ): Observable<any> {
+  ): Observable<Weather> {
     return this.http
       .get(`${baseUrl}/geo/1.0/direct?q=${cityName}'&limit=5&appid=${key}`)
       .pipe(
-        map((data: any) => {
-          return data.filter((search: any) => {
+        map((data: City[]) => {
+          return data.filter((search: City) => {
             return this.filterCountry(cityName, countryName, search);
           });
         }),
-        switchMap((data: any): any => {
+        switchMap((data: City[]) => {
           return this.searchWeatherByLatLong(data[0].lat, data[0].lon, units);
         }),
-        catchError((e) => of(e))
+        catchError((e: Error) => of(e))
       );
   }
 
@@ -61,25 +61,25 @@ export class WeatherService {
     cityName: string,
     countryName: string,
     units: string
-  ): Observable<any> {
+  ): Observable<ForecastResponse> {
     return this.http
       .get(
         `${baseUrl}/geo/1.0/direct?q=${cityName},${countryName}'&limit=5&appid=${key}`
       )
       .pipe(
-        map((data: any) => {
-          return data.filter((search: any) => {
+        map((data: City[]) => {
+          return data.filter((search: City) => {
             return this.filterCountry(cityName, countryName, search);
           });
         }),
-        switchMap((data: any): any => {
+        switchMap((data: City[]) => {
           return this.searchWeatherForecastLatLon(
             data[0].lat,
             data[0].lon,
             units
           );
         }),
-        catchError((e) => of(e))
+        catchError((e: Error) => of(e))
       );
   }
 
@@ -88,14 +88,14 @@ export class WeatherService {
     zip: string,
     countryName: string,
     units: string
-  ): Observable<any> {
+  ): Observable<Weather> {
     return this.http
       .get(`${baseUrl}/geo/1.0/zip?zip=${zip}&appid&appid=${key}`)
       .pipe(
-        switchMap((data: any): any => {
+        switchMap((data: City) => {
           return this.searchWeatherByLatLong(data.lat, data.lon, units);
         }),
-        catchError((e) => of(e))
+        catchError((e: Error) => of(e))
       );
   }
 
@@ -103,24 +103,24 @@ export class WeatherService {
     zip: string,
     countryName: string,
     units: string
-  ): Observable<any> {
+  ): Observable<ForecastResponse> {
     return this.http
       .get(`${baseUrl}/geo/1.0/zip?zip=${zip}&appid&appid=${key}`)
       .pipe(
-        switchMap((data: any): any => {
+        switchMap((data: City) => {
           return this.searchWeatherForecastLatLon(data.lat, data.lon, units);
         }),
-        catchError((e) => of(e))
+        catchError((e: Error) => of(e))
       );
   }
 
-  getForecastDates(weather: any) {
+  getForecastDates(weather: ForecastResponse) {
     let todaysDate = new Date().getDate();
     let tomorrow = new Date().getDate() + 1;
     let forecast = [];
 
     return weather.list
-      .map((day: any, index: number) => {
+      .map((day: Partial<Weather>) => {
         let foreCastDay = new Date(day.dt_txt).getDate();
         if (foreCastDay === todaysDate) {
           return day;
@@ -134,10 +134,10 @@ export class WeatherService {
           return day;
         }
       })
-      .filter((day: any) => day != null);
+      .filter((day: Partial<Weather>) => day != null);
   }
 
-  filterCountry(cityName, countryName, search) {
+  filterCountry(cityName: string, countryName: string, search: City) {
     let country = Countries[search?.country];
     return (
       search?.state.toLowerCase() === countryName.toLowerCase() ||
