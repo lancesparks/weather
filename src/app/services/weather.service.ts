@@ -17,11 +17,9 @@ export class WeatherService {
 
   //lat long search, all searches end up becoming this
   searchWeatherByLatLong(lat: number, lon: number, units: string = "imperial") {
-    return this.http
-      .get(
-        `${baseUrl}/data/2.5/weather?lat=${lat}&lon=${lon}&units=${units}&appid=${key}`
-      )
-      .pipe(catchError((e) => of(e)));
+    return this.http.get(
+      `${baseUrl}/data/2.5/weather?lat=${lat}&lon=${lon}&units=${units}&appid=${key}`
+    );
   }
 
   searchWeatherForecastLatLon(
@@ -29,19 +27,13 @@ export class WeatherService {
     lon: number,
     units: string = "imperial"
   ) {
-    return this.http
-      .get(
-        `${baseUrl}/data/2.5/forecast?lat=${lat}&lon=${lon}&units=${units}&appid=${key}`
-      )
-      .pipe(catchError((e) => of(e)));
+    return this.http.get(
+      `${baseUrl}/data/2.5/forecast?lat=${lat}&lon=${lon}&units=${units}&appid=${key}`
+    );
   }
 
   //city search
-  searchWeatherCityName(
-    cityName: string,
-    countryName: string,
-    units: string
-  ): Observable<Weather> {
+  searchWeatherCityName(cityName: string, countryName: string, units: string) {
     return this.http
       .get(`${baseUrl}/geo/1.0/direct?q=${cityName}'&limit=5&appid=${key}`)
       .pipe(
@@ -52,16 +44,11 @@ export class WeatherService {
         }),
         switchMap((data: City[]) => {
           return this.searchWeatherByLatLong(data[0].lat, data[0].lon, units);
-        }),
-        catchError((e: Error) => of(e))
+        })
       );
   }
 
-  searchForecastCityName(
-    cityName: string,
-    countryName: string,
-    units: string
-  ): Observable<ForecastResponse> {
+  searchForecastCityName(cityName: string, countryName: string, units: string) {
     return this.http
       .get(
         `${baseUrl}/geo/1.0/direct?q=${cityName},${countryName}'&limit=5&appid=${key}`
@@ -78,39 +65,28 @@ export class WeatherService {
             data[0].lon,
             units
           );
-        }),
-        catchError((e: Error) => of(e))
+        })
       );
   }
 
   //zip code search
-  searchWeatherZip(
-    zip: string,
-    countryName: string,
-    units: string
-  ): Observable<Weather> {
+  searchWeatherZip(zip: string, countryName: string, units: string) {
     return this.http
       .get(`${baseUrl}/geo/1.0/zip?zip=${zip}&appid&appid=${key}`)
       .pipe(
         switchMap((data: City) => {
           return this.searchWeatherByLatLong(data.lat, data.lon, units);
-        }),
-        catchError((e: Error) => of(e))
+        })
       );
   }
 
-  searchWeatherForecastZip(
-    zip: string,
-    countryName: string,
-    units: string
-  ): Observable<ForecastResponse> {
+  searchWeatherForecastZip(zip: string, countryName: string, units: string) {
     return this.http
       .get(`${baseUrl}/geo/1.0/zip?zip=${zip}&appid&appid=${key}`)
       .pipe(
         switchMap((data: City) => {
           return this.searchWeatherForecastLatLon(data.lat, data.lon, units);
-        }),
-        catchError((e: Error) => of(e))
+        })
       );
   }
 

@@ -62,6 +62,16 @@ export class SearchEffects {
               return action.loadWeatherLatLonForecastSuccess({
                 forecast: weather,
               });
+            }),
+            catchError((error: Error) => {
+              return of(error).pipe(
+                map((e) => {
+                  console.log(e);
+                  return action.loadWeatherByCityForecastFailure({
+                    error: "Invalid latitude or longitude",
+                  });
+                })
+              );
             })
           );
       }),
@@ -96,6 +106,16 @@ export class SearchEffects {
               return action.loadWeatherByCityForecastSuccess({
                 forecast: weather,
               });
+            }),
+            catchError((error: Error) => {
+              return of(error).pipe(
+                map((e) => {
+                  console.log(e);
+                  return action.loadWeatherByCityForecastFailure({
+                    error: "Invalid city or country",
+                  });
+                })
+              );
             })
           );
       }),
@@ -158,6 +178,15 @@ export class SearchEffects {
               return action.loadWeatherByCityForecastSuccess({
                 forecast: weather,
               });
+            }),
+            catchError((error: Error) => {
+              return of(error).pipe(
+                map((e) => {
+                  return action.loadWeatherByCityForecastFailure({
+                    error: "Invalid zip code or country",
+                  });
+                })
+              );
             })
           );
       }),
