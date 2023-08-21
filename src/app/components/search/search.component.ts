@@ -18,24 +18,31 @@ import { UnitType, Weather } from "../../types";
 export class SearchComponent implements OnInit {
   constructor(private store: Store, private fb: FormBuilder) {}
 
-  public weatherImage: string = "../../assets/images/weather_bug.png";
+  public defaultImage = "../../assets/images/weather_bug.png";
+  public weatherImage: string;
   public viewFilters: boolean = false;
   public showError: boolean = false;
   public previousSearch;
   public fetchError;
   public today;
   public unitType = "F";
+  public defaultError;
 
   public currentWeather$ = this.store.select(state.selectCurrentWeather).pipe(
     tap((data: Weather) => {
       if (!data) {
+        this.defaultError = "Invalid Entry";
         return;
       }
       if (data.weather) {
+        this.defaultError = null;
         this.unitType =
           this.weatherForm.get("units").value === "imperial" ? "F" : "C";
         this.weatherImage =
           Images[data?.weather[0]?.main?.toLowerCase() as keyof typeof Images];
+
+        this.weatherImage =
+          this.weatherImage == null ? this.defaultImage : this.weatherImage;
         this.previousSearch = data;
       }
     }),

@@ -82,6 +82,7 @@
       <span class="errorMsg" *ngIf="error$ | async as fetchError">{{
         fetchError
       }}</span>
+      <span class="errorMsg" *ngIf="defaultError">{{ defaultError }}</span>
     </form>
     <div class="container_current">
       <div class="container_header">
@@ -97,6 +98,9 @@
 
       <div class="weather">
         <img [src]="weatherImage" alt="" />
+        <span *ngIf="weatherImage === defaultImage" class="missing"
+          >missing weather image</span
+        >
       </div>
     </div>
 
